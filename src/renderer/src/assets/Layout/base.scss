@@ -1,0 +1,562 @@
+// 基础布局变量
+$layout-border-radius: 10px;
+$menu-width: 60px;
+$submenu-width: 250px;
+$header-height: 70px;
+$avatar-size: 35px;
+$menu-item-size: 40px;
+
+// 聊天项相关变量
+$chat-item-height: 70px;
+$chat-avatar-size: 45px;
+$user-box-width: 320px;
+$user-box-height: 390px;
+
+// 颜色变量
+$border-color: #dddddd;
+$light-border-color: #f3f3f3;
+$verified-color: #55a532;
+$link-color: #039aff;
+
+// 滚动条样式混入
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    &:hover {
+      background: rgba(191, 191, 191, 0.5);
+      border-radius: 4px;
+    }
+  }
+}
+
+// 弹性布局混入
+@mixin flex-layout($justify: flex-start, $align: stretch) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+/* 主布局容器 */
+.base-layout {
+  width: 100%;
+  height: 100vh;
+  background: var(--ev-c-text-1);
+  display: flex;
+  border-radius: $layout-border-radius;
+  overflow: hidden;
+
+  // 左侧菜单栏
+  &-l {
+    width: $menu-width;
+    height: 100vh;
+    background: var(--ev-c-text-2);
+    cursor: move;
+    -webkit-app-region: drag;
+    position: relative;
+
+    // 头像区域
+    .meun-but-avatar {
+      color: var(--ev-c-gray-1);
+      width: $avatar-size;
+      height: $avatar-size;
+      margin: 40px auto 20px;
+      cursor: pointer;
+      -webkit-app-region: no-drag;
+      border-radius: 50%;
+      position: relative;
+
+      .badge {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: var(--ev-c-gray-4);
+        position: absolute;
+        z-index: 99;
+        bottom: -2px;
+        right: -5px;
+        border: 2px solid #ffffff;
+      }
+    }
+
+    // 菜单按钮容器
+    .meun-but-box {
+      width: 45px;
+      height: auto;
+      margin: 0 auto;
+      -webkit-app-region: no-drag;
+      cursor: auto;
+
+      .meun-item {
+        width: $menu-item-size;
+        height: $menu-item-size;
+        border-radius: 6px;
+        margin: 0 auto 10px;
+        cursor: pointer;
+        color: var(--ev-c-gray-2);
+        text-align: center;
+        line-height: $menu-item-size;
+
+        .iconfont {
+          font-size: 22px;
+        }
+
+        &:hover {
+          background: var(--ev-c-text-4);
+        }
+      }
+
+      // 选中状态
+      &.item-xz {
+        background: var(--ev-c-text-4);
+        .iconfont {
+          color: var(--ev-c-gray-6);
+        }
+      }
+    }
+
+    // 底部菜单
+    .meun-but-box2 {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  }
+
+  // 右侧内容区
+  &-r {
+    width: calc(100% - #{$menu-width});
+    height: 100vh;
+    background: var(--ev-c-white-mute);
+  }
+
+  // 子菜单布局
+  .base-meun-layout {
+    display: flex;
+
+    // 左侧子菜单
+    .meun-item-l {
+      width: $submenu-width;
+      height: 100vh;
+      background: var(--ev-c-white);
+      border-right: 1px solid #dddddd;
+    }
+
+    // 右侧内容区
+    .meun-item-r {
+      width: calc(100% - #{$submenu-width});
+      height: 100vh;
+    }
+
+    // 顶部区域
+    .meun-t {
+      width: 100%;
+      height: $header-height;
+      -webkit-app-region: drag;
+
+      // 工具栏
+      .meun-t-tool {
+        height: 30px;
+        width: 100%;
+
+        .meun-tool-r {
+          width: 150px;
+          height: 30px;
+          float: right;
+          display: flex;
+          justify-content: end;
+          -webkit-app-region: no-drag;
+
+          .meun-but {
+            width: 40px;
+            height: 30px;
+            text-align: center;
+            cursor: pointer;
+            color: #515c67;
+            line-height: 30px;
+
+            .mt-guanbi {
+              font-size: 12px;
+            }
+
+            &:hover {
+              background: var(--ev-c-gray-5);
+              color: #ffffff;
+            }
+
+            &:nth-child(1),
+            &:nth-child(2) {
+              &:hover {
+                background: var(--ev-c-text-5);
+              }
+            }
+          }
+        }
+      }
+
+      // 搜索框区域
+      .meun-b-box {
+        height: 40px;
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+
+        .meun-input-box {
+          width: 90%;
+          height: 35px;
+          -webkit-app-region: no-drag;
+          margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+
+          .meun-input {
+            width: 100%;
+            height: 30px;
+          }
+
+          .meun-button {
+            width: 20%;
+            height: 30px;
+
+            &-icon {
+              margin-top: 4px;
+              float: right;
+              position: relative;
+            }
+          }
+        }
+      }
+    }
+
+    // 主内容区域
+    .meun-mian {
+      width: 100%;
+      height: calc(100% - 72px);
+      overflow: auto;
+      @include custom-scrollbar;
+    }
+  }
+}
+
+.t2{
+  color: #1b1b1f;
+}
+.but-item{
+  display: flex;
+  p{
+    margin-left: 10px;
+  }
+}
+.im-item{
+  width: 100%;
+  height: $chat-item-height;
+  @include flex-layout(flex-start, center);
+  line-height: 55px;
+  padding-top: 5px;
+  cursor: pointer;
+
+  // 左侧头像
+  &-l {
+    width: $chat-avatar-size;
+    height: $chat-avatar-size;
+    border-radius: 50%;
+    padding-left: 10px;
+  }
+
+  // 右侧内容
+  &-r {
+    width: calc(100% - #{$chat-avatar-size + 20px});
+    margin-left: 20px;
+
+    // 聊天信息头部
+    .im-r-t {
+      height: 30px;
+      width: 100%;
+      @include flex-layout(space-between);
+      color: var(--ev-c-black-mute);
+
+      .text-l {
+        width: 60%;
+        font-size: 12px;
+        line-height: 40px;
+
+        &:nth-child(2) {
+          width: 35%;
+          font-size: 11px;
+          line-height: 40px;
+          font-weight: normal;
+          color: var(--ev-c-black-mute-1);
+          text-align: right;
+          margin-right: 10px;
+        }
+      }
+
+      &:nth-child(2) {
+        width: calc(100% - 20px);
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+  }
+
+  &:hover {
+    background: var(--ev-c-text-3);
+  }
+}
+.im-selected{
+  background: var(--ev-c-gray-7);
+  color: #ffffff;
+  &:hover{
+    background: var(--ev-c-gray-7);
+  }
+}
+
+.ss-head{
+  height: 75px;
+  width: 90%;
+
+  margin: 0 auto;
+  border-bottom: 1px solid $border-color;
+  .ss-head-title{
+    font-size: 14px;
+    color: #bfbfbf;
+  }
+  .ss-head-t-box{
+    color: var( --ev-c-gray-1);
+    @include flex-layout;
+    padding-top: 10px;
+    div{
+      font-size: 14px;
+      margin-right: 10px;
+      background: var(--ev-c-text-6);
+      padding: 2px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  }
+}
+.ss-list-mian{
+  width: 90%;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+
+.h1000{
+  height: 1000px;
+  width: 20px;
+  margin: 0px auto 40px auto;
+  background: #3dec03;
+
+
+}
+.yuanxing{
+  width: 40px ;
+  height: 40px ;
+  background: #039aff;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+  margin-top: 10px;
+  .mt-31sousuo{
+    font-size: 20px;
+  }
+}
+.hy-main{
+  width: 90%;
+  margin:0 auto;
+}
+.tab-main{
+  width: 90%;
+  margin: 0 auto;
+}
+.hy-button{
+  width: 100%;
+}
+.listBox{
+  height: 70px;
+  width: 100%;
+  margin-top: 10px;
+  margin-top: 10px;
+
+  border-bottom: 1px solid #f3f3f3;
+  .item-list{
+    width: 100%;
+    height: 35px;
+    color: var(--ev-c-black-mute);
+    display: flex;
+    justify-content: space-between;
+    line-height: 35px;
+   &:hover{
+     background: var( --ev-c-text-3);
+   }
+    .item-text{
+      padding-left: 20px;
+      font-size: 14px;
+    }
+    .iconfont{
+      padding-right: 20px;
+    }
+  }
+}
+.shuzhi{
+  font-size: 12px;
+  color: var(--ev-c-black-mute-1);
+}
+.userBox{
+  width: $user-box-width;
+  height: $user-box-height;
+  background: linear-gradient(to top, #ffffff, #e2f0f8);
+  border-radius: 8px;
+  padding-top: 10px;
+  .user-box-top{
+    width: 95%;
+    height: 70px;
+    margin: 0 auto 20px;
+    @include flex-layout(flex-start, center);
+    line-height: 70px;
+
+    .ser-box-Avatar{
+      width: 60px;
+      height: 60px;
+      margin: 0 10px;
+    }
+    .user-box-con{
+      width: calc(100% - 120px);
+      line-height:30px;
+      .user-text-c{
+        font-size: 12px;
+        line-height: 20px;
+        color: var(--ev-c-black-mute-1);
+        height: 20px;
+      }
+      .user-text-b{
+        line-height: 20px;
+        height: 20px;
+        span{
+          color: var(--ev-c-black-mute-1);
+        }
+      }
+    }
+    .user-box-r{
+      width: 60px;
+      text-align: center;
+      line-height:80px;
+      i{
+        font-size: 30px;
+        font-weight: bold;
+      }
+
+    }
+  }
+  .user-list-1{
+    height: 30px;
+    width: 95%;
+    margin: 0 auto ;
+    display: flex;
+    .user-l1-text{
+      width: 80px;
+      height: 30px;
+      line-height: 30px;
+      text-align: right;
+      color: var( --ev-c-gray-1);
+      padding-right: 20px;
+    }
+    .user-l2-text{
+      width: calc(100% - 70px);
+      line-height: 30px;
+     .user-lt-20{
+       margin-right: 10px;
+     }
+      .user-img-box{
+        width: 65px;
+        margin-right: 5px;
+        float: left;
+      }
+    }
+  }
+  .user-list-2{
+     width: 80%;
+    margin: 0 auto;
+    display: flex;
+    height: 50px;
+    line-height: 50px;
+    justify-content: space-between;
+    padding-top: 10px;
+    .button{
+      width: 47%;
+    }
+  }
+
+}
+.ant-popover-content{
+  margin-left: 5px;
+}
+.ant-popover-inner{
+  padding: 0 !important;
+}
+
+.mt-weirenzheng{
+  font-size: 70px !important;
+}
+.mt-yirenzheng-copy{
+  font-size: 50px !important;
+  color: $verified-color;
+}
+
+.meun-Model{
+  top: 12vh;
+  -webkit-app-region: no-drag;
+
+
+.model-main{
+  height: 70vh ;
+  @include flex-layout;
+  .model-main-l{
+    width: 40%;
+    height: 100%;
+    overflow: hidden;
+    border-right: 1px solid $border-color;
+    .model-l-top{
+      height: 40px;
+      width: 90%;
+      margin-top: 10px;
+    }
+    .model-l-box{
+      height: 60vh;
+      width: 100%;
+      overflow: auto;
+      @include custom-scrollbar;
+    }
+  }
+  .model-main-r{
+    width: 60%;
+    height: 100%;
+    .model-r-text{
+      width: 100%;
+      height: 30px;
+      padding-left: 10px;
+    }
+    .model-r-c{
+      width: 100%;
+      height: 59vh;
+      padding-left: 10px;
+      overflow: auto;
+      @include custom-scrollbar;
+    }
+    .model-r-b{
+      width: 100%;
+      height: 40px;
+      padding-left: 20px;
+      @include flex-layout(flex-end);
+      button{
+        margin-left: 20px;
+      }
+    }
+  }
+}
+}
+
+
+
